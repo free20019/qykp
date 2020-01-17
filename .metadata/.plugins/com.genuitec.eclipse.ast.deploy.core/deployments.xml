@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<deployments>
+  <deployment context-root="/qykp" deployment-path="E:/apache-tomcat-7.0.73/webapps/qykp" project-name="qykp" server-id="tomcat7Server" state="DEPLOYED" type="WEB"/>
+</deployments>

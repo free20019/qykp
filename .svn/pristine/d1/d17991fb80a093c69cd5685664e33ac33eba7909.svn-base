@@ -1,0 +1,648 @@
+package mvc.controllers;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+
+import mvc.service.CommonService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@Controller
+@RequestMapping(value = "/common")
+public class CommonAction {
+	private CommonService commonService;
+
+	public CommonService getCommonService() {
+		return commonService;
+	}
+
+	@Autowired
+	public void setCommonService(CommonService commonService) {
+		this.commonService = commonService;
+	}
+
+	@RequestMapping(value = "/test")
+	@ResponseBody
+	public String test() {
+		String msg = "ok";
+		System.out.println("####");
+		commonService.test();
+		return msg;
+	}
+
+	/**
+	 * 岗位管理-查询
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/part")
+	@ResponseBody
+	public String part(HttpServletRequest request,
+			@RequestParam("gw") String gw,
+			@RequestParam("currentpage") String currentpage,
+			@RequestParam("totalnum") String totalnum) {
+		String msg = "ok";
+		msg = commonService.part(gw, currentpage, totalnum);
+		return msg;
+	}
+
+	/**
+	 * 部门岗位-tree
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/tree")
+	@ResponseBody
+	public String tree() {
+		String msg = "ok";
+		msg = commonService.tree();
+		return msg;
+	}
+
+	/**
+	 * 权限-tree
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/qxtree")
+	@ResponseBody
+	public String qxtree() {
+		String msg = "ok";
+		msg = commonService.qxtree();
+		return msg;
+	}
+
+	/**
+	 * 增加岗位-权限
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/addsave")
+	@ResponseBody
+	public String addsave(HttpServletRequest request,
+			@RequestParam("mc") String mc, @RequestParam("id") String id) {
+		int msg = 0;
+		msg = commonService.addsave(mc, id);
+		if (msg == 1) {
+			return "{\"msg\":\"添加成功\"}";
+		} else {
+			return "{\"msg\":\"添加失败\"}";
+		}
+	}
+
+	/**
+	 * 删除岗位-权限
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/del")
+	@ResponseBody
+	public String del(HttpServletRequest request, @RequestParam("sj") String sj) {
+		int msg = 0;
+		msg = commonService.del(sj);
+		if (msg > 0) {
+			return "{\"msg\":\"删除成功\"}";
+		} else {
+			return "{\"msg\":\"删除失败\"}";
+		}
+	}
+
+	/**
+	 * 修改岗位-权限
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/editsave")
+	@ResponseBody
+	public String editsave(HttpServletRequest request,
+			@RequestParam("mc") String mc, @RequestParam("nr") String nr,
+			@RequestParam("id") String id) {
+		int msg = 0;
+		msg = commonService.editsave(mc, nr, id);
+		if (msg > 0) {
+			return "{\"msg\":\"修改成功\"}";
+		} else {
+			return "{\"msg\":\"修改失败\"}";
+		}
+	}
+
+	/**
+	 * 用户管理-查询
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/user")
+	@ResponseBody
+	public String user(HttpServletRequest request,
+			@RequestParam("name") String name, @RequestParam("bm") String bm,
+			@RequestParam("currentpage") String currentpage,
+			@RequestParam("totalnum") String totalnum) {
+		String msg = "ok";
+		msg = commonService.user(name, bm, currentpage, totalnum);
+		return msg;
+	}
+
+	/**
+	 * 增加用户
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/useraddsave")
+	@ResponseBody
+	public String useraddsave(HttpServletRequest request,
+			@RequestParam("xm") String xm, @RequestParam("zh") String zh,
+			@RequestParam("mm") String mm,@RequestParam("bm") String bm,
+			@RequestParam("gw") String gw) {
+		int msg = 0;
+		msg = commonService.useraddsave(xm, zh, mm,gw,bm);
+		if (msg == 1) {
+			return "{\"msg\":\"添加成功\"}";
+		} else {
+			return "{\"msg\":\"添加失败\"}";
+		}
+	}
+	
+
+	/**
+	 * 删除用户
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/userdel")
+	@ResponseBody
+	public String userdel(HttpServletRequest request, @RequestParam("sj") String sj) {
+		int msg = 0;
+		msg = commonService.userdel(sj);
+		if (msg > 0) {
+			return "{\"msg\":\"删除成功\"}";
+		} else {
+			return "{\"msg\":\"删除失败\"}";
+		}
+	}
+	/**
+	 * 修改用户
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/usereditsave")
+	@ResponseBody
+	public String usereditsave(HttpServletRequest request,
+			@RequestParam("xm") String xm, @RequestParam("zh") String zh,
+			@RequestParam("mm") String mm, @RequestParam("bm") String bm,
+			@RequestParam("gw") String gw, @RequestParam("id") String id) {
+		int msg = 0;
+		msg = commonService.usereditsave(xm, zh,mm,bm,gw, id);
+		if (msg > 0) {
+			return "{\"msg\":\"修改成功\"}";
+		} else {
+			return "{\"msg\":\"修改失败\"}";
+		}
+	}
+	
+	/**
+	 * 部门管理-查询
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/bmgl")
+	@ResponseBody
+	public String bmgl(HttpServletRequest request,
+			@RequestParam("bm") String bm,
+			@RequestParam("currentpage") String currentpage,
+			@RequestParam("totalnum") String totalnum) {
+		String msg = "ok";
+		msg = commonService.bmgl(bm, currentpage, totalnum);
+		return msg;
+	}
+	/**
+	 * 增加部门
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/bmgladdsave")
+	@ResponseBody
+	public String bmgladdsave(HttpServletRequest request,
+			@RequestParam("bm") String bm, @RequestParam("parent") String parent) {
+		int msg = 0;
+		msg = commonService.bmgladdsave(bm, parent);
+		if (msg == 1) {
+			return "{\"msg\":\"添加成功\"}";
+		} else {
+			return "{\"msg\":\"添加失败\"}";
+		}
+	}
+	
+	/**
+	 * 删除部门
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/bmgldel")
+	@ResponseBody
+	public String bmgldel(HttpServletRequest request, @RequestParam("sj") String sj) {
+		int msg = 0;
+		msg = commonService.bmgldel(sj);
+		if (msg > 0) {
+			return "{\"msg\":\"删除成功\"}";
+		} else {
+			return "{\"msg\":\"删除失败\"}";
+		}
+	}
+	/**
+	 * 修改部门
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/bmgleditsave")
+	@ResponseBody
+	public String bmgleditsave(HttpServletRequest request,
+			@RequestParam("bm") String bm, @RequestParam("id") String id, @RequestParam("sjid") String sjid) {
+		int msg = 0;
+		msg = commonService.bmgleditsave(bm,id,sjid);
+		if (msg > 0) {
+			return "{\"msg\":\"修改成功\"}";
+		} else {
+			return "{\"msg\":\"修改失败\"}";
+		}
+	}
+	
+	
+	
+	/**
+	 * 查找签到
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/findqdsz")
+	@ResponseBody
+	public String findqdsz() {
+		String msg = "ok";
+		msg = commonService.findqdsz();
+		return msg;
+	}
+
+	/**
+	 * 签到设置
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/addsz")
+	@ResponseBody
+	public String addsz(HttpServletRequest request,
+			@RequestParam("bm") String bm, @RequestParam("longi") String longi,
+			@RequestParam("lati") String lati, @RequestParam("sb") String sb,
+			@RequestParam("xb") String xb, @RequestParam("fw") String fw) {
+		int msg = 0;
+		msg = commonService.addsz(bm, longi, lati, sb, xb, fw);
+		if (msg == 1) {
+			return "{\"msg\":\"设置成功\"}";
+		} else {
+			return "{\"msg\":\"设置失败\"}";
+		}
+	}
+	
+	/**
+	 * 签到查询
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/qdtj")
+	@ResponseBody
+	public String qdtj(HttpServletRequest request,
+			@RequestParam("name") String name,
+			@RequestParam("bm") String bm,
+			@RequestParam("stime") String stime,
+			@RequestParam("etime") String etime,
+			@RequestParam("currentpage") String currentpage,
+			@RequestParam("totalnum") String totalnum) {
+		String msg = commonService.qdtj(name,bm, stime,etime,currentpage, totalnum);
+		return msg;
+	}
+	
+	/**
+	 * 请假查询
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/qjcx")
+	@ResponseBody
+	public String qjcx(HttpServletRequest request,
+			@RequestParam("name") String name,
+			@RequestParam("bm") String bm,
+			@RequestParam("stime") String stime,
+			@RequestParam("etime") String etime,
+			@RequestParam("currentpage") String currentpage,
+			@RequestParam("totalnum") String totalnum) {
+		String msg = commonService.qjcx(name,bm, stime,etime,currentpage, totalnum);
+		return msg;
+	}
+	
+	/**
+	 * 增加请假
+	 * 
+	 * @return
+	 * @throws ParseException 
+	 */
+	@RequestMapping(value = "/qjcxadd")
+	@ResponseBody
+	public String qjcxadd(HttpServletRequest request,
+			@RequestParam("name") String name,
+			@RequestParam("spuser") String spuser,
+			@RequestParam("userid") String userid,
+			@RequestParam("kstime") String kstime,
+			@RequestParam("jstime") String jstime,
+			@RequestParam("qjly") String qjly,
+			@RequestParam("qjlx") String qjlx,
+			@RequestParam("qjjg") String qjjg,
+			@RequestParam("qjsc") String qjsc
+			){ 
+		int msg =commonService.qjcxadd(name,spuser,userid,kstime,jstime,qjly, qjlx, qjjg, qjsc);
+		if (msg == 1) {
+			return "{\"msg\":\"添加成功\"}";
+		} else {
+			return "{\"msg\":\"添加失败\"}";
+		}
+	}
+	/**
+	 * 请假删除
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/qjcxdel")
+	@ResponseBody
+	public String qjcxdel(HttpServletRequest request, @RequestParam("sj") String sj) {
+		int msg = 0;
+		msg = commonService.qjcxdel(sj);
+		System.out.println(sj);
+		if (msg > 0) {
+			return "{\"msg\":\"删除成功\"}";
+		} else {
+			return "{\"msg\":\"删除失败\"}";
+		}
+	}
+	/**
+	 * 修改请假
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/qjcxeditsave")
+	@ResponseBody
+	public String qjcxeditsave(HttpServletRequest request,
+			@RequestParam("name") String name,
+			@RequestParam("spuser") String spuser,
+			@RequestParam("userid") String userid,
+			@RequestParam("kstime") String kstime,
+			@RequestParam("jstime") String jstime,
+			@RequestParam("qjly") String qjly,
+			@RequestParam("qjlx") String qjlx,
+			@RequestParam("qjjg") String qjjg,
+			@RequestParam("qjsc") String qjsc,
+			@RequestParam("id") String id
+			) {
+		int msg = 0;
+		msg = commonService.qjcxeditsave(name,spuser,userid,kstime,jstime,qjly,qjlx,qjjg,qjsc,id);
+		if (msg > 0) {
+			return "{\"msg\":\"修改成功\"}";
+		} else {
+			return "{\"msg\":\"修改失败\"}";
+		}
+	}
+	
+	/**
+	 * 外勤查询
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/wqcx")
+	@ResponseBody
+	public String wqcx(HttpServletRequest request,
+			@RequestParam("name") String name,
+			@RequestParam("bm") String bm,
+			@RequestParam("stime") String stime,
+			@RequestParam("etime") String etime,
+			@RequestParam("currentpage") String currentpage,
+			@RequestParam("totalnum") String totalnum) {
+		String msg = commonService.wqcx(name,bm, stime,etime,currentpage, totalnum);
+		return msg;
+	}
+
+/**
+ * 增加外勤
+ * 
+ * @return
+ * @throws ParseException 
+ */
+@RequestMapping(value = "/wqcxadd")
+@ResponseBody
+public String wqcxadd(HttpServletRequest request,
+		@RequestParam("username") String username,
+		@RequestParam("spuser") String spuser,
+		@RequestParam("userid") String userid,
+		@RequestParam("time") String time,
+		@RequestParam("address") String address,
+		@RequestParam("content") String content,
+		@RequestParam("spjg") String spjg
+		){ 
+	int msg =commonService.wqcxadd(username, spuser,userid, time, address, content, spjg);
+	if (msg == 1) {
+		return "{\"msg\":\"添加成功\"}";
+	} else {
+		return "{\"msg\":\"添加失败\"}";
+	}
+}
+/**
+ * 外勤删除
+ * 
+ * @return
+ */
+@RequestMapping(value = "/wqcxdel")
+@ResponseBody
+public String wqcxdel(HttpServletRequest request, @RequestParam("sj") String sj) {
+	int msg = 0;
+	msg = commonService.wqcxdel(sj);
+	System.out.println(sj);
+	if (msg > 0) {
+		return "{\"msg\":\"删除成功\"}";
+	} else {
+		return "{\"msg\":\"删除失败\"}";
+	}
+}
+/**
+ * 修改外勤信息
+ * 
+ * @return
+ */
+@RequestMapping(value = "/wqcxeditsave")
+@ResponseBody
+public String wqcxeditsave(HttpServletRequest request,
+		@RequestParam("username") String username,
+		@RequestParam("spuser") String spuser,
+		@RequestParam("userid") String userid,
+		@RequestParam("time") String time,
+		@RequestParam("address") String address,
+		@RequestParam("content") String content,
+		@RequestParam("spjg") String spjg,
+		@RequestParam("id") String id
+		) {
+	int msg = 0;
+	msg = commonService.wqcxeditsave(username,spuser,userid,time,address,content,spjg,id);
+	if (msg > 0) {
+		return "{\"msg\":\"修改成功\"}";
+	} else {
+		return "{\"msg\":\"修改失败\"}";
+	}
+}
+/**
+ * 加班查询
+ * 
+ * @return
+ */
+@RequestMapping(value = "/jbcx")
+@ResponseBody
+public String jbcx(HttpServletRequest request,
+		@RequestParam("name") String name,
+		@RequestParam("bm") String bm,
+		@RequestParam("kstime") String kstime,
+		@RequestParam("jstime") String jstime,
+		@RequestParam("currentpage") String currentpage,
+		@RequestParam("totalnum") String totalnum) {
+	String msg = commonService.jbcx(name,bm,kstime,jstime,currentpage,totalnum);
+	return msg;
+}
+/**
+ * 增加加班
+ * 
+ * @return
+ * @throws ParseException 
+ */
+@RequestMapping(value = "/jbcxadd")
+@ResponseBody
+public String jbcxadd(HttpServletRequest request,
+		@RequestParam("username") String username,
+		@RequestParam("spuser") String spuser,
+		@RequestParam("userid") String userid,
+		@RequestParam("bm") String bm,
+		@RequestParam("stime") String stime,
+		@RequestParam("etime") String etime,
+		@RequestParam("content") String content,
+		@RequestParam("sqjg") String sqjg,
+		@RequestParam("jbsc") String jbsc
+		) throws ParseException{ 
+	int msg =commonService.jbcxadd(username, spuser, userid,bm,stime, etime, content, sqjg,jbsc);
+	if (msg == 1) {
+		return "{\"msg\":\"添加成功\"}";
+	} else {
+		return "{\"msg\":\"添加失败\"}";
+	}
+}
+/**
+ * 加班删除
+ * 
+ * @return
+ */
+@RequestMapping(value = "/jbcxdel")
+@ResponseBody
+public String jbcxdel(HttpServletRequest request, @RequestParam("sj") String sj) {
+	int msg = 0;
+	msg = commonService.jbcxdel(sj);
+	System.out.println(sj);
+	if (msg > 0) {
+		return "{\"msg\":\"删除成功\"}";
+	} else {
+		return "{\"msg\":\"删除失败\"}";
+	}
+}
+/**
+ * 修改加班信息
+ * 
+ * @return
+ */
+@RequestMapping(value = "/jbcxeditsave")
+@ResponseBody
+public String jbcxeditsave(HttpServletRequest request,
+		@RequestParam("username") String username,
+		@RequestParam("spuser") String spuser,
+		@RequestParam("userid") String userid,
+		@RequestParam("stime") String stime,
+		@RequestParam("etime") String etime,
+		@RequestParam("content") String content,
+		@RequestParam("sqjg") String sqjg,
+		@RequestParam("jbsc") String jbsc,
+		@RequestParam("id") String id
+		) {
+	int msg = 0;
+	msg = commonService.jbcxeditsave(username,spuser,userid, stime, etime, content, sqjg, jbsc, id);
+	if (msg > 0) {
+		return "{\"msg\":\"修改成功\"}";
+	} else {
+		return "{\"msg\":\"修改失败\"}";
+	}
+}
+/**
+ * 
+ * 
+ * @return
+ */
+@RequestMapping(value = "/queryqj")
+@ResponseBody
+public String queryqj(HttpServletRequest request,
+		@RequestParam("id") String id
+		) {
+	String msg = commonService.queryqj(id);
+	return msg;
+}
+/**
+ * 
+ * 
+ * @return
+ */
+@RequestMapping(value = "/querywq")
+@ResponseBody
+public String querwq(HttpServletRequest request,
+		@RequestParam("id") String id
+		) {
+	String msg = commonService.querywq(id);
+	return msg;
+}
+/**
+ * 
+ * 
+ * @return
+ */
+@RequestMapping(value = "/queryjb")
+@ResponseBody
+public String querjb(HttpServletRequest request,
+		@RequestParam("id") String id
+		) {
+	String msg = commonService.queryjb(id);
+	return msg;
+}
+/**
+ * 
+ * 
+ * @return
+ */
+@RequestMapping(value = "/selectname")
+@ResponseBody
+public String selectname(HttpServletRequest request
+	) {
+	String msg = commonService.selectname();
+	return msg;
+}
+
+//@RequestMapping(value = "/selectwqname")
+//@ResponseBody
+//public String selectwqname(HttpServletRequest request
+//	) {
+//	String msg = commonService.selectwqname();
+//	return msg;
+//}
+}

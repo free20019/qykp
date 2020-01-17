@@ -1,0 +1,222 @@
+;(function(Vue, _, layui, util, config) {
+  var $
+  var vm = new Vue({
+    el: '#root',
+    data() {
+      return {
+        layLoaded: false,
+        table: {
+          el: null,
+          cols: config.tableColumn
+        },
+        dialog: {
+          editData: null,
+          form: {
+            handover: []
+          }
+        }
+      }
+    },
+    beforeCreate() {
+      layui.use(['table', 'laydate'], () => {
+        var layTable = layui.table
+        $ = layui.jquery
+        layer = layui.layer
+        vm.table.el = layTable.render({
+          id: 'tw-table',
+          elem: '.tw-table-placeholder',
+          height: 'full-80',
+          size: 'sm',
+          page: true,
+          limit: 50,
+          cols: vm.table.cols,
+          data: []
+        })
+        vm.layLoaded = true
+      })
+    },
+    mounted() {
+      if (!this.dialog.editData)
+        this.dialog.editData = new EditData(
+          this.dialog.form,
+          this,
+          config.editItem('编辑')
+        )
+      var data = [
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' }
+      ]
+      setTimeout(() => {
+        this.table.el.reload({ data })
+      }, 1000)
+    },
+    computed: {},
+    methods: {
+      handleQueryClick() {},
+      handleDetailsClick() {
+        const tableHandover = config.tableHandoverColumn('经办人')
+        this.dialog.form.workHandover = config.handoverContent('部门', true)
+        this.dialog.form.networkManage = config.handoverContent('网络', true)
+        this.dialog.form.generalDep = config.handoverContent('综合', true)
+        this.dialog.form.handover = [
+          {
+            department: '部门工作',
+            handoverContent: this.dialog.form.workHandover,
+            signature: '张三',
+            date: '2018-10-10',
+            remarks: ''
+          },
+          {
+            department: '网络管理',
+            handoverContent: this.dialog.form.networkManage,
+            signature: '',
+            date: '',
+            remarks: ''
+          },
+          {
+            department: '综合部',
+            handoverContent: this.dialog.form.generalDep,
+            signature: '',
+            date: '',
+            remarks: ''
+          }
+        ]
+        var html = this.createFormHtml('查看', true)
+        layer.open(config.layerOptions('会议纪要-详情', this.closeLayerOpen))
+        $('#dialogEdited').html(html)
+        const table = new MTable(this.dialog.form.handover, this, tableHandover)
+        table.init()
+        util.layDateControl(this)
+      },
+      handleAddClick() {
+        this.dialog.form.workHandover = config.handoverContent('部门')
+        this.dialog.form.networkManage = config.handoverContent('网络')
+        this.dialog.form.generalDep = config.handoverContent('综合')
+        var html = this.createFormHtml('申请')
+        layer.open(config.layerOptions('离职交接-添加', this.closeLayerOpen))
+        $('#dialogEdited').html(html)
+        util.layDateControl(this)
+      },
+      handleDepManagerClick() {
+        const tableHandover = config.tableHandoverColumn()
+        this.dialog.form.workHandover = config.handoverContent('部门', true)
+        this.dialog.form.networkManage = config.handoverContent('网络', true)
+        this.dialog.form.generalDep = config.handoverContent('综合', true)
+        this.$set(this.dialog.form, 'handover', [
+          {
+            department: '部门工作',
+            handoverContent: this.dialog.form.workHandover,
+            signature: '张三',
+            date: '2018-10-10',
+            remarks: ''
+          }
+        ])
+        const html = this.createFormHtml('部门')
+        layer.open(config.layerOptions('离职交接-添加', this.closeLayerOpen))
+        $('#dialogEdited').html(html)
+        const table = new MTable(this.dialog.form.handover, this, tableHandover)
+        table.init()
+        util.layDateControl(this)
+      },
+      handleGeneralDepClick() {
+        const tableHandover = config.tableHandoverColumn()
+        this.dialog.form.workHandover = config.handoverContent('部门', true)
+        this.dialog.form.networkManage = config.handoverContent('网络', true)
+        this.dialog.form.generalDep = config.handoverContent('综合', true)
+        this.dialog.form.handover = [
+          {
+            department: '网络管理',
+            handoverContent: this.dialog.form.networkManage,
+            signature: '',
+            date: '',
+            remarks: ''
+          },
+          {
+            department: '综合部',
+            handoverContent: this.dialog.form.generalDep,
+            signature: '',
+            date: '',
+            remarks: ''
+          }
+        ]
+        const html = this.createFormHtml('部门')
+        layer.open(config.layerOptions('离职交接-添加', this.closeLayerOpen))
+        $('#dialogEdited').html(html)
+        const table = new MTable(this.dialog.form.handover, this, tableHandover)
+        table.init()
+        util.layDateControl(this)
+      },
+      handleManagerClick() {
+        const tableHandover = config.tableHandoverColumn('经办人')
+        this.dialog.form.workHandover = config.handoverContent('部门', true)
+        this.dialog.form.networkManage = config.handoverContent('网络', true)
+        this.dialog.form.generalDep = config.handoverContent('综合', true)
+        this.dialog.form.handover = [
+          {
+            department: '部门工作',
+            handoverContent: this.dialog.form.workHandover,
+            signature: '张三',
+            date: '2018-10-10',
+            remarks: ''
+          },
+          {
+            department: '网络管理',
+            handoverContent: this.dialog.form.networkManage,
+            signature: '',
+            date: '',
+            remarks: ''
+          },
+          {
+            department: '综合部',
+            handoverContent: this.dialog.form.generalDep,
+            signature: '',
+            date: '',
+            remarks: ''
+          }
+        ]
+        const html = this.createFormHtml('经办人', true)
+        layer.open(config.layerOptions('离职交接-添加', this.closeLayerOpen))
+        $('#dialogEdited').html(html)
+        const table = new MTable(this.dialog.form.handover, this, tableHandover)
+        table.init()
+        util.layDateControl(this)
+      },
+      createFormHtml(type, confirm) {
+        const editData = this.dialog.editData
+        editData.options = config.editItem(type, confirm)
+        return $('<div>')
+          .addClass('tw-form')
+          .html(editData.initTag())
+      },
+      closeLayerOpen() {
+        this.dialog.editData.clearDate()
+      }
+    }
+  })
+})(Vue, _, layui, util, config)

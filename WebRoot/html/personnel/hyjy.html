@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="renderer" content="webkit" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />
+    <title>会议纪要</title>
+    <link
+      rel="stylesheet"
+      href="../../resources/css/styles/tw-layout.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../resources/plugins/layui-v2/css/layui.css"
+      media="all"
+    />
+    <script src="../../resources/plugins/vue/vue.js"></script>
+    <script src="../../resources/plugins/underscore-min.js"></script>
+    <script src="../../resources/plugins/jquery-2.2.4.min.js"></script>
+    <script src="../../resources/plugins/axios.min.js"></script>
+    <script src="../../resources/script/util.js"></script>
+    <script src="../util.js"></script>
+    <script src="../../resources/script/dataType.js"></script>
+    <script src="./hyjy.config.js"></script>
+    <script src="../../resources/script/m-base.js"></script>
+    <script src="../../resources/script/layFormType.js"></script>
+    <script src="../../resources/script/editData.js"></script>
+  </head>
+
+  <body>
+    <div id="root" class="tw-query-panel">
+      <form class="tw-query-bar layui-form">
+        <div class="layui-form-item layui-inline">
+          <input
+                  required
+                  class="layui-input layui-date1"
+                  v-model="query.stime"
+                  lay-verify="required"
+                  placeholder="开始时间"
+                  autocomplete="off"
+          />
+        </div>
+        <div class="layui-form-item layui-inline">
+          <input
+                  required
+                  class="layui-input layui-date2"
+                  v-model="query.etime"
+                  lay-verify="required"
+                  placeholder="结束时间"
+                  autocomplete="off"
+          />
+        </div>
+        <div class="layui-form-item layui-inline">
+          <a
+            href="javascript:void(0);"
+            class="layui-btn layui-btn-normal"
+            @click="handleQueryClick"
+            >查询</a
+          >
+        </div>
+        <div class="layui-form-item layui-inline">
+          <a
+            href="javascript:void(0);"
+            class="layui-btn layui-btn-normal"
+            @click="handleDetailsClick"
+            >查看详情</a
+          >
+        </div>
+        <div class="layui-form-item layui-inline">
+          <a
+            href="javascript:void(0);"
+            class="layui-btn layui-btn-normal"
+            @click="handleAddClick"
+            >添加</a
+          >
+        </div>
+      </form>
+      <div class="tw-query-body">
+        <div class="tw-table-placeholder"></div>
+      </div>
+    </div>
+    <script
+      type="text/javascript"
+      src="../../resources/plugins/layui-v2/layui.js"
+    ></script>
+    <script src="./hyjy.js"></script>
+  </body>
+</html>

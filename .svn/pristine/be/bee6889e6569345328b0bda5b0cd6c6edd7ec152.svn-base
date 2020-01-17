@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>Layui</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../resources/plugins/layui/css/layui.css"
+	media="all" />
+<link rel="stylesheet" href="../resources/css/begtable.css" />
+<link href="../resources/css/style2.css" rel="stylesheet"
+	type="text/css" />
+<link rel="stylesheet" href="../resources/zTree/css/demo.css"
+	type="text/css">
+<link rel="stylesheet"
+	href="../resources/zTree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="../resources/plugins/layui/layui.js"
+	media="all"></script>
+<script type="text/javascript"
+	src="../resources/zTree/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript"
+	src="../resources/zTree/js/jquery.ztree.all.js"></script>
+<script type="text/javascript"
+	src="../resources/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="util.js"></script>
+<style type="text/css">
+html body {
+	height: 100%;
+	width: 100%;
+}
+
+.ddd input,.ddd select {
+	display: inline-block;
+	margin-top: 5px;
+	height: 30px;
+}
+
+
+</style>
+</head>
+
+<body>
+	<div style="margin: 15px;height: 100%;">
+		<div style="height: 35px">
+			姓名&nbsp;<input type="text" class="layui-text" id="wqcx_name">&nbsp;
+			部门&nbsp;<input type="text" class="layui-text" id="wqcx_bm">&nbsp;
+			日期&nbsp;<input type="text" class="layui-text" id="wqcx_stime"
+				onclick="WdatePicker({skin:'whyGreen',maxDate:'%y-%M-%d'})"> —<input
+				type="text" class="layui-text" id="wqcx_etime"
+				onclick="WdatePicker({skin:'whyGreen',maxDate:'%y-%M-%d'})">&nbsp;
+			<button class="layui-btn" id="wqcx_search">查询</button>
+			<button class="layui-btn" id="wqcx_add" onclick="part.add.show()">添加</button>
+			<button class="layui-btn" id="wqcx_del" onclick="part.del()">删除</button>
+			<button class="layui-btn" id="wqcx_edit" onclick="part.edit.show()">修改</button>
+		</div>
+		<div
+			style="width: 100%; height: 400px; border: 1px solid #01AAED;overflow: auto">
+			<table
+				class="beg-table beg-table-bordered beg-table-striped beg-table-hovered"
+				id="wqcx_table">
+				<thead>
+					<tr>
+					    <th style="width: 50px">选择</th> 
+						<th style="width: 60px">序号</th>
+						<th style="width: 100px">外勤报告人员</th>
+						<th style="width: 100px">部门</th>
+						<th style="width: 180px">外勤报告时间</th>
+						<th style="width: 300px">外勤报告地点</th>
+						<th style="width: 300px">外勤报告内容</th>
+						<th style="width: 100px">审批人</th>
+						<th style="width: 100px">审批结果</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<div class="pagin">
+			<div class="message">
+				共&nbsp;<i class="blue" id="totalnum"></i>&nbsp;条记录，当前显示第&nbsp;<i
+					class="blue" id="currentpage"></i>&nbsp;页&nbsp;/&nbsp;共&nbsp;<i
+					class="blue" id="totalpage"></i>&nbsp;页
+			</div>
+			<ul class="paginList">
+				<li class="paginItem"><a href="javascript:;"
+					onclick="part.click.gopage()">首页</a></li>
+				<li class="paginItem"><a href="javascript:;"
+					style="width: 60px" onclick="part.click.gosyy()">上一页</a></li>
+				<li class="paginItem"><a href="javascript:;"
+					style="width: 60px" onclick="part.click.goxyy()">下一页</a></li>
+				<li class="paginItem"><a href="javascript:;"
+					onclick="part.click.goend()">末页</a></li>
+			</ul>
+		</div>
+	</div>
+	<script language="JavaScript" src="wqcx.js"></script>
+	<script type="text/template" id="aaa">
+			<div style="width:100%;">
+ 				<div class="layui-inline">
+					<label class="layui-form-label" style="width: 5em;"> 姓 名:</label>
+					<div class="layui-input-block ddd" style="margin-left: 7em;">
+					   <select id="wqcx_username" style="width:204px">
+                       <option value="1001001">孙海娟</option>
+                       <option value="1001138">徐慧华</option>
+                       <option value="1001137">黄也</option>
+                      </select>
+					</div>
+				</div>
+        <br/>
+	          <div class="layui-inline">
+					<label class="layui-form-label" style="width: 5em;"> 审批人:</label>
+					<div class="layui-input-block ddd" style="margin-left: 7em;">
+	                  <select id="wqcx_spuser" style="width:204px">
+                       <option selected>平台录入</option>
+                      </select>
+					</div>
+				</div>
+
+				<div class="layui-inline">
+					<label class="layui-form-label" style="width: 5em;"> 报告时间:</label>
+					<div class="layui-input-block ddd" style="margin-left: 7em;">
+               <input id="wqcx_time" class="layui-input" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+					</div>
+				</div>
+                  <div class="layui-inline">
+					<label class="layui-form-label" style="width: 5em;"> 报告地点:</label>
+					<div class="layui-input-block ddd" style="margin-left: 7em;">
+						<input id="wqcx_address" class="layui-input" />
+					</div>
+				</div>
+               <div class="layui-inline">
+					<label class="layui-form-label" style="width: 5em;"> 报告内容:</label>
+					<div class="layui-input-block ddd" style="margin-left: 7em;">
+						<input id="wqcx_content" class="layui-input" />
+					</div>
+				</div>
+              	<div class="layui-inline" >
+					<label class="layui-form-label" style="width: 5em;"> 审批结果:</label>
+				<div class="layui-input-block ddd" style="margin-left: 7em;">
+						<select id="wqcx_spjg" style="width:204px">
+                       <option value="1">申请通过</option>
+                       <option value="2">申请不通过</option>
+                       <option value="3">未审批</option>
+                        <option value="4" selected>其他</option>
+                        </select>
+					</div>
+				</div>  
+			</div>
+		</script>
+</body>
+</html>

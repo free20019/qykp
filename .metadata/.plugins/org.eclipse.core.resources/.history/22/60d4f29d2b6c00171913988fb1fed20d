@@ -1,0 +1,234 @@
+var currentpage=1;
+var totalnum=13;
+var resultdata;
+var pgzs=0;
+(function() {		//javascript模块化
+	var part = {
+			//查询
+			search: function(){
+				if($("#qjcx_stime").val()==""||$("#qjcx_etime").val()==""){
+					alert("请选择查询的日期时间段！");
+					return;
+				}
+				
+				$.ajax({
+				    type:"post",
+				    url: "../common/qjcx",
+				    data:{
+				    	"name": $("#qjcx_name").val(),
+				    	"bm": $("#qjcx_bm").val(),
+				    	"stime": $("#qjcx_stime").val(),
+				    	"etime": $("#qjcx_etime").val(),
+				    	"currentpage": $("#currentpage").html()==""?currentpage:$("#currentpage").html(),
+				    	"totalnum" :totalnum
+				    	},
+				    dataType: "json",
+				    success:function(data){
+				    	$("#qjcx_table tbody").html("");
+//				    	console.log(data);
+				    	for(var i=0;i<data.datas.length;i++){
+				    		var html='<tr><td>'+(i+1)+'</td>'+
+				    		'<td>'+data.datas[i].USERNAME+'</td>'+
+				    		'<td>'+data.datas[i].BM+'</td>'+
+				    		'<td>'+formatYYYYMMDDHHMISS(data.datas[i].QJKSTIME)+'—'+formatYYYYMMDDHHMISS(data.datas[i].QJJSTIME)+'</td>'+
+				    		'<td>'+data.datas[i].QJTYPE+'</td>'+
+				    		'<td>'+data.datas[i].QJNR+'</td>'+
+				    		'<td>'+data.datas[i].SPUSER+'</td>'+
+				    		'<td>'+formatSQJG(data.datas[i].SQJG)+'</td></tr>';
+				    		$("#qjcx_table tbody").append(html);
+				    	}
+				    	if(data.count>0){
+							pgzs = parseInt((data.count-1)/totalnum)+1;
+							$("#totalpage").html(pgzs);
+							$("#totalnum").html(data.count);
+						}else{
+							$("#totalpage").html("0");
+							$("#totalnum").html("0");
+						}
+						$("#currentpage").html(currentpage);
+						totalnum=13;
+				    }
+				});
+			},
+			//添加
+			add:{
+				show:function(){
+					//引入layer弹出框
+					layui.use('layer', function(){
+						var $ =layui.jquery,
+						    layer=layui.layer;
+						layer.open({
+						title : '添加假期',
+						type : 1,
+						area : [ '350px', '400px' ], // 宽高
+						content: $('#aaa').html(),
+						btn: ['保存', '关闭'], //按钮
+						yes: function(index){
+      				  		part.add.save();
+      				  		layer.close(index);
+      				  	},
+      				    btn2:function(index){
+    				  		layer.close(index);
+    				  	}
+						});
+						
+					});
+				
+			},
+			save:function(){
+				$.ajax({
+				    type:"post",
+				    url: "../common/qjcxaddsave",
+				    data:{"name": $("#qjcx_xm").val(),
+				    	"username":$('#qjcx_zh').val(),
+				    	"password":$('qjcx_mm').val(),
+				    	"bm":$('qjcxbm').val()
+				    	},
+				    dataType: "json",
+				    success:function(data){
+				    	layui.use('layer', function () {
+			                var $ = layui.jquery,
+									layer = layui.layer;
+			                layer.msg(data.msg);
+			                part.search();
+						});
+				    }
+				});
+			}
+			
+			},
+			//删除
+			del:function(){
+				layui.use('layer', function () {
+	                var $ = layui.jquery,
+							layer = layui.layer;
+	                if($('#qjcx_table tbody input:checked').length==0){
+						layer.msg("请选择要删除项");
+					}else{
+						var sj="";
+						$('#qjcx_table tbody input:checked').each(function(index,element){
+							sj+=element.value+",";
+						});
+						console.log(sj)
+						$.ajax({
+							type:"post",
+							url: "../common/qjcxdel",
+							data:{"sj": sj.substring(0,sj.length-1)},
+							dataType: "json",
+							success:function(data){
+								layui.use('layer', function () {
+									var $ = layui.jquery,
+									layer = layui.layer;
+									layer.msg(data.msg);
+									part.search();
+								});
+							}
+						});
+					}
+				});
+			},
+			//修改
+			edit:{
+				show:function(){
+					//引入layer弹出框
+					layui.use('layer', function () {
+		                var $ = layui.jquery,
+								layer = layui.layer;
+		                //判断选中项
+						if($('#qjcx_table tbody input:checked').length>1){
+							layer.msg("只能修改一选中项");
+						}else if($('#qjcx_table tbody input:checked').length==0){
+							layer.msg("请选择一项才能进行修改");
+						}else{
+							//弹出框
+			                layer.open({
+			        			title : '修改信息',
+			        			type : 1,
+			        			area : [ '350px', '400px' ], // 宽高
+			        			content: $('#aaa').html(),
+			        			btn: ['保存', '关闭'], //可以无限个按钮
+			        			yes: function(index){
+		      				  		part.edit.save();
+		      				  		layer.close(index);
+		      				  	},
+		      				  	btn2:function(index){
+		      				  		layer.close(index);
+		      				  	}
+		    				});
+						}
+					});
+				},
+				save:function(){
+					$.ajax({
+					    type:"post",
+					    url: "../common/qjcxeditsave",
+					    data:{"xm": $("#qjcx_xm").val(),
+					    	"id":$('#qjcx_table tbody input:checked').val(),
+					    	"password":$('#sjbmid').val(),
+					    	},
+					    dataType: "json",
+					    success:function(data){
+					    	layui.use('layer', function () {
+				                var $ = layui.jquery,
+										layer = layui.layer;
+				                layer.msg(data.msg);
+				                part.search();
+							});
+					    }
+					});
+				}
+			},
+			//分页
+			click:{
+				gopage:function(){
+					currentpage=1;
+					part.search();
+				},
+				goxyy:function(){
+					currentpage++;
+					if(currentpage>pgzs){
+						layui.use('layer', function () {
+			                var $ = layui.jquery,
+									layer = layui.layer;
+						layer.msg("已到末页");
+						currentpage=currentpage-1;
+						return;
+						});
+					}
+					part.search();
+				},
+				gosyy:function(){
+					currentpage--;
+					if(currentpage<=0){
+						layui.use('layer', function () {
+			                var $ = layui.jquery,
+									layer = layui.layer;
+						layer.msg("已到首页");
+						currentpage=currentpage+1;
+						return;
+						});
+					}
+					part.search();
+				},
+				goend:function(){
+					currentpage = pgzs;
+					part.search();
+				}
+			}
+	};
+	window.part = part;
+	part.search();
+	$('#qjcx_search').click(function(){
+		part.search();
+	});
+	 $("#qjcx_stime").val(setformat4(new Date()));
+     $("#qjcx_etime").val(setformat3(new Date()));
+	//part.search();
+	$('#qjcx_search').click(function(){
+		part.search();
+	});
+	function addi(i){
+		return i+1;
+	}
+})();
+

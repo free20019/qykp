@@ -1,0 +1,170 @@
+var _tableColumn = [
+  [
+    { field: 'id', title: '编号', width: 80, align: 'center' },
+    { field: 'name', title: '姓名', width: 140, align: 'center' },
+    { field: 'age', title: '年龄', width: 80, align: 'center' },
+    { field: 'sex', title: '性别', width: 80, align: 'center' },
+    { field: 'education', title: '最高学历', width: 100, align: 'center' },
+    { field: 'experience', title: '政治面貌', width: 100, align: 'center' },
+    { field: 'post', title: '岗位', width: 180, align: 'center' },
+    { field: 'department', title: '所属部门', width: 180, align: 'center' },
+    { field: 'entryTime', title: '进公司时间', width: 140, align: 'center' },
+    { field: 'entryTime', title: '工作总结', width: 140, align: 'center' },
+    { field: 'entryTime', title: '部门评价', minWidth: 280, align: 'center' },
+    { field: 'entryTime', title: '部门负责人', width: 140, align: 'center' },
+    { field: 'entryTime', title: '评价日期', width: 140, align: 'center' }
+  ]
+]
+
+var config = {
+  tableColumn: _tableColumn,
+  editItem(type) {
+    const columns = [
+      {
+        title: '姓名',
+        itemGName: 'md4',
+        children: {
+          name: 'name',
+          type: 'lay-input',
+          valueType: String,
+          placeholder: true,
+          disabled: type === '审批'
+        }
+      },
+      {
+        title: '年龄',
+        itemGName: 'md4',
+        children: {
+          name: 'age',
+          type: 'lay-input',
+          valueType: Number,
+          placeholder: true,
+          disabled: type === '审批'
+        }
+      },
+      {
+        title: '性别',
+        itemGName: 'md4',
+        children: {
+          name: 'sex',
+          type: 'lay-input',
+          valueType: String,
+          placeholder: true,
+          disabled: type === '审批'
+        }
+      },
+      {
+        title: '最高学历',
+        itemGName: 'md4',
+        children: {
+          name: 'education',
+          type: 'lay-input',
+          valueType: String,
+          placeholder: true,
+          disabled: type === '审批'
+        }
+      },
+      {
+        title: '政治面貌',
+        itemGName: 'md4',
+        children: {
+          name: 'political',
+          type: 'lay-input',
+          valueType: String,
+          placeholder: true,
+          disabled: type === '审批'
+        }
+      },
+      {
+        title: '岗位',
+        itemGName: 'md4',
+        children: {
+          name: 'post',
+          type: 'lay-input',
+          valueType: String,
+          placeholder: true,
+          disabled: type === '审批'
+        }
+      },
+      {
+        title: '所属部门',
+        itemGName: 'md4',
+        children: {
+          name: 'department',
+          type: 'lay-input',
+          valueType: String,
+          placeholder: true,
+          disabled: type === '审批'
+        }
+      },
+      {
+        title: '进公司时间',
+        itemGName: 'md4',
+        children: {
+          name: 'entryTime',
+          type: 'lay-date',
+          valueType: String,
+          placeholder: true,
+          disabled: type === '审批'
+        }
+      }
+    ]
+    if (type === '编辑' || type === '审批')
+      columns.push({
+        // title: '2019年个人年中工作总结',
+        title: '工作总结',
+        itemGName: 'md12',
+        labelGName: 'md1',
+        children: {
+          name: 'workSummary',
+          type: 'lay-textarea',
+          valueType: String,
+          placeholder: true,
+          disabled: type === '审批'
+        }
+      })
+    if (type === '审批')
+      columns.push({
+        title: '部门评价',
+        itemGName: 'md12',
+        labelGName: 'md1',
+        children: [
+          {
+            name: 'evaluateName',
+            title: '签名',
+            type: 'lay-input',
+            className: 'innerWrap',
+            valueType: String,
+            placeholder: true
+          },
+          {
+            name: 'evaluateTime',
+            title: '日期',
+            type: 'lay-date',
+            className: 'innerWrap',
+            valueType: String,
+            placeholder: true
+          },
+          {
+            name: 'evaluate',
+            type: 'lay-textarea',
+            valueType: String,
+            placeholder: true
+          }
+        ]
+      })
+    return columns
+  },
+  layerOptions(title, cb) {
+    return {
+      id: 'dialogEdited',
+      type: 1,
+      title,
+      area: ['1100px', '600px'],
+      content: '',
+      end() {
+        if (cb) cb()
+      }
+    }
+  }
+}

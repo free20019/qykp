@@ -1,0 +1,105 @@
+var _tableColumn = [
+  [
+    { field: 'id', title: '编号', width: 80, align: 'center' },
+    { field: 'name', title: '姓名', width: 140, align: 'center' },
+    { field: 'department', title: '部门', width: 180, align: 'center' },
+    { field: 'time', title: '日期', width: 140, align: 'center' },
+    {
+      field: 'schedule',
+      title: '昨日完成及进度',
+      minWidth: 280,
+      align: 'center'
+    },
+    { field: 'problem', title: '待解决问题', minWidth: 280, align: 'center' },
+    { field: 'plan', title: '今日计划', minWidth: 280, align: 'center' }
+  ]
+]
+var config = {
+  tableColumn: _tableColumn,
+  editItem() {
+    const columns = [
+      {
+        title: '姓名',
+        itemGName: 'md4',
+        children: {
+          name: 'name',
+          type: 'lay-input',
+          valueType: String,
+          placeholder: true,
+          disabled: true
+        }
+      },
+      {
+        title: '部门',
+        itemGName: 'md4',
+        children: {
+          name: 'department',
+          type: 'lay-input',
+          valueType: String,
+          placeholder: true,
+          disabled: true
+        }
+      },
+      {
+        title: '日期',
+        itemGName: 'md4',
+        children: {
+          name: 'time',
+          type: 'lay-date',
+          valueType: String,
+          placeholder: true,
+          disabled: true
+        }
+      },
+      {
+        title: '昨日进度',
+        itemGName: 'md12',
+        labelGName: 'md1',
+        children: {
+          name: 'schedule',
+          type: 'lay-textarea',
+          valueType: String,
+          placeholder: '请输入昨日完成及进度',
+          disabled: true
+        }
+      },
+      {
+        title: '待解决问题',
+        itemGName: 'md12',
+        labelGName: 'md1',
+        children: {
+          name: 'problem',
+          type: 'lay-textarea',
+          valueType: String,
+          placeholder: true,
+          disabled: true
+        }
+      },
+      {
+        title: '今日计划',
+        itemGName: 'md12',
+        labelGName: 'md1',
+        children: {
+          name: 'plan',
+          type: 'lay-textarea',
+          valueType: String,
+          placeholder: true,
+          disabled: true
+        }
+      }
+    ]
+    return columns
+  },
+  layerOptions(title, cb) {
+    return {
+      id: 'dialogEdited',
+      type: 1,
+      title,
+      area: ['1100px', '500px'],
+      content: '',
+      end() {
+        if (cb) cb()
+      }
+    }
+  }
+}

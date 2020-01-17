@@ -1,0 +1,86 @@
+function formatYYYYMMDDHHMISS(d){
+	if(d != ''){
+		return new Date(d).format("yyyy-MM-dd hh:mm:ss");
+	}else{
+		return '';
+	}
+}
+Date.prototype.format = function(fmt)   
+{ //author: meizz   
+  var o = {   
+    "M+" : this.getMonth()+1,                 //月份   
+    "d+" : this.getDate(),                    //日   
+    "h+" : this.getHours(),                   //小时   
+    "m+" : this.getMinutes(),                 //分   
+    "s+" : this.getSeconds(),                 //秒   
+    "q+" : Math.floor((this.getMonth()+3)/3), //季度   
+    "S"  : this.getMilliseconds()             //毫秒   
+  };   
+  if(/(y+)/.test(fmt))   
+    fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));   
+  for(var k in o)   
+    if(new RegExp("("+ k +")").test(fmt))   
+  fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));   
+  return fmt;   
+}
+
+function setformat3(obj) {
+	var y = (obj.getFullYear()).toString();
+	var m = (obj.getMonth() + 1).toString();
+	if (m.length == 1) {
+		m = "0" + m;
+	}
+	var d = obj.getDate().toString();
+	if (d.length == 1) {
+		d = "0" + d;
+	}
+	var h = obj.getHours().toString();
+	if (h.length == 1) {
+		h = "0" + h;
+	}
+	var mi = obj.getMinutes().toString();
+	if (mi.length == 1) {
+		mi = "0" + mi;
+	}
+	var s = obj.getSeconds().toString();
+	if (s.length == 1) {
+		s = "0" + s;
+	}
+	var time = y + "-" + m + "-" + d;
+	return time;
+}
+function setformat4(obj) {
+	var y = (obj.getFullYear()).toString();
+	var m = (obj.getMonth() + 1).toString();
+	if (m.length == 1) {
+		m = "0" + m;
+	}
+	var d = obj.getDate().toString();
+	if (d.length == 1) {
+		d = "0" + d;
+	}
+	var h = obj.getHours().toString();
+	if (h.length == 1) {
+		h = "0" + h;
+	}
+	var mi = obj.getMinutes().toString();
+	if (mi.length == 1) {
+		mi = "0" + mi;
+	}
+	var s = obj.getSeconds().toString();
+	if (s.length == 1) {
+		s = "0" + s;
+	}
+	var time = y + "-" + m + "-01";
+	return time;
+}
+
+function formatSQJG(obj){
+	if(obj=="1"){
+		return "申请通过";
+	}else if(obj=="2"){
+		return "申请不通过";
+	}else if(obj=="3"){
+		return "未审批";
+	}
+}

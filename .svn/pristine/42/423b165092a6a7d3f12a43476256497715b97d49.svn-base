@@ -1,0 +1,139 @@
+var _tableColumn = [
+  [
+    { field: 'id', title: '编号', width: 80, align: 'center' },
+    { field: 'meetingTime', title: '会议时间', width: 140, align: 'center' },
+    { field: 'meetingPlace', title: '会议地点', width: 180, align: 'center' },
+    { field: 'participants', title: '参会人员', width: 240, align: 'center' },
+    { field: 'hostMeeting', title: '会议主持', width: 120, align: 'center' },
+    { field: 'meetingRecord', title: '会议记录', width: 240, align: 'center' },
+    {
+      field: 'jobSummary',
+      title: '本周工作小结',
+      minWidth: 240,
+      align: 'center'
+    },
+    {
+      field: 'nextWeekWork',
+      title: '下周重点工作',
+      minWidth: 240,
+      align: 'center'
+    },
+    {
+      field: 'decisionMatter',
+      title: '决定事项和要求',
+      minWidth: 240,
+      align: 'center'
+    }
+  ]
+]
+
+var config = {
+  tableColumn: _tableColumn,
+  editItem(type) {
+    const disLook = type === '查看'
+    const disabled = disLook
+    const columns = [
+      {
+        title: '会议时间',
+        itemGName: 'md4',
+        children: {
+          name: 'meetingTime',
+          type: 'lay-date',
+          valueType: String,
+          placeholder: true,
+          disabled
+        }
+      },
+      {
+        title: '会议地点',
+        itemGName: 'md4',
+        children: {
+          name: 'meetingPlace',
+          type: 'lay-input',
+          valueType: String,
+          placeholder: true,
+          disabled
+        }
+      },
+      {
+        title: '参会人员',
+        itemGName: 'md4',
+        children: {
+          name: 'participants',
+          type: 'lay-input',
+          valueType: String,
+          placeholder: true,
+          disabled
+        }
+      },
+      {
+        title: '会议主持',
+        itemGName: 'md4',
+        children: {
+          name: 'hostMeeting',
+          type: 'lay-input',
+          valueType: String,
+          placeholder: true,
+          disabled
+        }
+      },
+      {
+        title: '会议记录',
+        itemGName: 'md8',
+        children: {
+          name: 'meetingRecord',
+          type: 'lay-input',
+          valueType: String,
+          placeholder: true,
+          disabled
+        }
+      },
+      {
+        title: '工作小结',
+        itemGName: 'md12',
+        children: {
+          name: 'jobSummary',
+          type: 'lay-textarea',
+          valueType: String,
+          placeholder: '请输入本周工作小结',
+          disabled
+        }
+      },
+      {
+        title: '下周工作',
+        itemGName: 'md12',
+        children: {
+          name: 'nextWeekWork',
+          type: 'lay-textarea',
+          valueType: String,
+          placeholder: '请输入下周重点工作',
+          disabled
+        }
+      },
+      {
+        title: '决定事项',
+        itemGName: 'md12',
+        children: {
+          name: 'decisionMatter',
+          type: 'lay-textarea',
+          valueType: String,
+          placeholder: '请输入决定事项和要求',
+          disabled
+        }
+      }
+    ]
+    return columns
+  },
+  layerOptions(title, cb) {
+    return {
+      id: 'dialogEdited',
+      type: 1,
+      title,
+      area: ['1100px', '550px'],
+      content: '',
+      end() {
+        if (cb) cb()
+      }
+    }
+  }
+}

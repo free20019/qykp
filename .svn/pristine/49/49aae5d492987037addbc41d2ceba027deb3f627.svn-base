@@ -1,0 +1,138 @@
+;(function(Vue, _, layui, util, config, axios) {
+  var $, layer, form
+  var vm = new Vue({
+    el: '#root',
+    data() {
+      return {
+        layLoaded: false,
+        table: {
+          el: null,
+          cols: config.tableColumn
+        },
+        dialog: {
+          editData: null,
+          tableResume: null,
+          tableFamily: null,
+          form: {
+            resume: [],
+            family: []
+          }
+        }
+      }
+    },
+    beforeCreate() {
+      layui.use(['table', 'laydate'], () => {
+        var layTable = layui.table
+        $ = layui.jquery
+        layer = layui.layer
+        form = layui.form
+        vm.table.el = layTable.render({
+          id: 'tw-table',
+          elem: '.tw-table-placeholder',
+          height: 'full-80',
+          size: 'sm',
+          page: true,
+          limit: 50,
+          cols: vm.table.cols,
+          data: []
+        })
+        vm.layLoaded = true
+      })
+    },
+    mounted() {
+      if (!this.dialog.editData)
+        this.dialog.editData = new EditData(
+          this.dialog.form,
+          this,
+          config.editItem()
+        )
+      var data = [
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' },
+        { id: '123', name: '炸SAN' }
+      ]
+      setTimeout(() => {
+        vm.table.el.reload({ data })
+      }, 1000)
+    },
+    computed: {
+      resumeTableColumns() {
+        const className = 'table-resume'
+        return {
+          ...config.resumeTableColumns(),
+          className,
+          hasAdd: true,
+          hasRemove: true,
+          addClick: this.handleAddResumeClick
+        }
+      },
+      familyTableColumns() {
+        var className = 'table-family'
+        return {
+          ...config.familyTableColumns(),
+          className,
+          hasAdd: true,
+          hasRemove: true,
+          addClick: this.handleAddFamilyClick
+        }
+      }
+    },
+    methods: {
+      handleQueryClick() {},
+      handleAddClick() {
+        var html = this.createFormHtml('添加')
+        layer.open(config.layerOptions('离职申请'))
+        $('#dialogEdited').html(html)
+        util.wrapEl('#dialogEdited', 'md6')
+        util.layDateControl(this)
+        form.render('select')
+      },
+      handleDetailsClick() {
+        var html = this.createFormHtml('查看')
+        layer.open(config.layerOptions('离职申请-详情'))
+        $('#dialogEdited').html(html)
+        util.wrapEl('#dialogEdited', 'md6')
+      },
+      createFormHtml(type) {
+        const editData = this.dialog.editData
+        editData.options = config.editItem(type)
+        return $('<div>')
+          .addClass('tw-form layui-form')
+          .html(editData.initTag())
+      },
+      panelOption(title) {
+        return {
+          title: title,
+          titleAlign: 'center',
+          titleFontSize: 18,
+          className: 'layui-col-md12'
+        }
+      }
+    }
+  })
+})(Vue, _, layui, util, config, axios)
